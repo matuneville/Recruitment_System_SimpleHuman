@@ -12,6 +12,7 @@ from typing import List, Optional, Dict
 # Librerias para guardado y procesamiento de csv
 import pandas as pd
 import pathlib
+
 # Constantes y models
 # from app.src.constants import CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE
 from models import StudentCandidate
@@ -48,18 +49,20 @@ class CandidateService:
             pd.DataFrame(self.data_header).to_csv(self.data_path, mode='w', header=False, index=False)
             df_new_candidate.to_csv(self.data_path, mode='w', header=True, index=False)
 
-    def get_all_candidates(self) -> pd.DataFrame:
+    def get_all_candidates(self, with_score: bool = False) -> pd.DataFrame:
         """Devuelve pandas dataframe de los de los candidatos"""
         if self.data_path.exists():
             df = pd.read_csv(self.data_path)
             # Convierto skills separadas por coma a lista nuevamente, siempre que no sea NaN ni sea string vacio
             df['skills'] = df['skills'].apply(lambda skills: skills.split(',') if pd.notna(skills) and skills else [])
+            if with_score:
+                df['score'] = df.apply(lambda row: self._calculate_score(row), axis=1)
             return df
         else:
             return pd.DataFrame(columns=self.data_header)
 
     def get_preselected_candidates(self, k: int = 10, with_score: bool = True) -> pd.DataFrame:
-        """Devuelve pandas dataframe de los primeros k mejores candidatos"""
+        """Devuelve pandas dataframe de los primeros k mejores candidatos ordenados descendientemente"""
         df = pd.read_csv(self.data_path)
         df['score'] = df.apply(lambda row: self._calculate_score(row), axis=1)
         sorted_df = df.sort_values(by=['score'], ascending=False)
@@ -72,10 +75,15 @@ class CandidateService:
         if self.data_path.exists():
             self.data_path.unlink()
 
-    def get_candidate_by_id(self, candidate_id: int) -> StudentCandidate:
+    def get_candidate_by_id(self, candidate_id: int) -> StudentCandidate | None:
         """Devuelve candidato especifico por su ID (para simplificar, su ID es el índice en el dataframe,
-        es deicr, el número de línea, que coincide con el momento en que fue creado)"""
-        candidate_row = self.get_all_candidates().iloc[candidate_id]
+        es deicr, el número de línea, que coincide con el momento en que fue creado).
+        Como el enunciado no requiere implementar eliminiación de candidatos, no habría problemas con esta
+        implementación, ya que siempre mantendrían su ID = numero de fila"""
+        candidates = self.get_all_candidates()
+        if candidate_id < 0 or candidate_id >= len(candidates):
+            return None
+        candidate_row = candidates.iloc[candidate_id]
         candidate_data = candidate_row.to_dict()
         candidate_data['skills'] = candidate_row['skills'] # ya es una lista
         return StudentCandidate(**candidate_data)
@@ -89,5 +97,5 @@ class CandidateService:
             score += self.preselection_weights['college']
         for skill in row['skills']:
             if skill in self.relevant_skills:
-                score += self.preselection_weights['skill']
+                score += self.preselection_weights['skills']
         return score

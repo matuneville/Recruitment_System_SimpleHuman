@@ -30,18 +30,21 @@ def get_candidates(
         max_score: Optional[float] = Query(None, ge=0, le=1, description="Filter by maximum score")
 ):
     """Obtiene lista de candidatos con filtros (opcionales)"""
-    candidates = candidates_service.get_all_candidates()
+    candidates_df = candidates_service.get_all_candidates(with_score=True if min_score or max_score else False)
+    candidates = candidates_df.to_dict(orient="records")
 
+    # Al filtrar con 'in', nos permite queries más flexibles: por ej,
+    # si filtramos degree = 'science', entonces nos devuelve tanto Computer Science como Data Science
     if name:
-        candidates = [c for c in candidates if name.lower() in c.full_name.lower()]
+        candidates = [c for c in candidates if name.lower() in c['full_name'].lower()]
     if college:
-        candidates = [c for c in candidates if college.lower() in c.college.lower()]
+        candidates = [c for c in candidates if college.lower() in c['college'].lower()]
     if degree:
-        candidates = [c for c in candidates if degree.lower() in c.degree.lower()]
+        candidates = [c for c in candidates if degree.lower() in c['degree'].lower()]
     if min_score is not None:
-        candidates = [c for c in candidates if c.score >= min_score]
+        candidates = [c for c in candidates if c['score'] >= min_score]
     if max_score is not None:
-        candidates = [c for c in candidates if c.score <= max_score]
+        candidates = [c for c in candidates if c['score'] <= max_score]
 
     return {
         'total': len(candidates),

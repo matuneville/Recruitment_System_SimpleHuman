@@ -13,6 +13,6 @@ class StudentCandidate(BaseModel):
     email: EmailStr
     college: str
     degree: str
-    academic_average: float = Field(..., gt=3, le=10)
+    academic_average: float = Field(..., ge=3, le=10)
     skills: List[str] = []
     work_experience: str = '-'
