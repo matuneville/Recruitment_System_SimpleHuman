@@ -71,4 +71,6 @@ class PDFReportGenerator:
 
     @staticmethod
     def _format_skills(skills):
-        return ', '.join(skills.split(','))
+        if pd.notna(skills):
+            return ', '.join(skills.split(','))
+        return ''

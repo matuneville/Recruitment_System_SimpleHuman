@@ -95,7 +95,9 @@ class CandidateService:
             score += self.preselection_weights['academic_average']
         if row['college'] in self.prestige_colleges:
             score += self.preselection_weights['college']
-        for skill in row['skills']:
-            if skill in self.relevant_skills:
-                score += self.preselection_weights['skills']
+        skills = row['skills']
+        if skills and isinstance(skills, list):
+            for skill in skills:
+                if skill in self.relevant_skills:
+                    score += self.preselection_weights['skills']
         return score
