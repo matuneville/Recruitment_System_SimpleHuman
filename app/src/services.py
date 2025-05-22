@@ -3,6 +3,8 @@ services,py
 
 Lógica principal del sistema.
 Se definen las principales acciones que dan función y comportamiento al sistema.
+
+Provee clase CandidateService que encapsula los principales métodos para trabajar con la información de los candidatos.
 """
 from typing import List, Optional, Dict
 
@@ -65,7 +67,6 @@ class CandidateService:
         """Elimina la informacion de los candidatos"""
         if self.data_path.exists():
             self.data_path.unlink()
-
 
     def _calculate_score(self, row):
         """Calcula el puntaje de un candidato (row de pandas dataframe) segun las ponderaciones asignadas"""
