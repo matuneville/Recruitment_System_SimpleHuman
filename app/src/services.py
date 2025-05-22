@@ -5,6 +5,7 @@ Lógica principal del sistema.
 Se definen las principales acciones que dan función y comportamiento al sistema.
 
 Provee clase CandidateService que encapsula los principales métodos para trabajar con la información de los candidatos.
+Provee una interfaz para la operación de los candidatos.
 """
 from typing import List, Optional, Dict
 
@@ -57,11 +58,14 @@ class CandidateService:
         else:
             return pd.DataFrame(columns=self.data_header)
 
-    def get_preselected_candidates(self, k: int = 10) -> pd.DataFrame:
+    def get_preselected_candidates(self, k: int = 10, with_score: bool = True) -> pd.DataFrame:
         """Devuelve pandas dataframe de los primeros k mejores candidatos"""
         df = pd.read_csv(self.data_path)
         df['score'] = df.apply(lambda row: self._calculate_score(row), axis=1)
-        return df.sort_values(by=['score'], ascending=False).drop(columns='score').head(k)
+        sorted_df = df.sort_values(by=['score'], ascending=False)
+        if not with_score:
+            sorted_df = sorted_df.drop(columns=['score'])
+        return sorted_df.head(k)
 
     def clear_all_candidates(self):
         """Elimina la informacion de los candidatos"""
