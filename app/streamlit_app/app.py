@@ -10,6 +10,8 @@ def main():
 
     tab_1, tab_2 = st.tabs(["Search Candidates", "Create New Candidate"])
 
+    # Creo primera tab de la app: donde se buscan candidatos totales, por su nombre,
+    # los top-k mejores, o se imprime el reporte PDF
     with tab_1:
         st.header("Search Filters")
         col_1, col_2 = st.columns(2)
@@ -57,6 +59,7 @@ def main():
         if st.button("Generate PDF Report"):
             generate_and_download_pdf_report(top_k_report)
 
+    # Creo la segunda tab de la app: donde se crea un nuevo usuario para la db (csv en este caso)
     with tab_2:
         st.header("🆕 Create New Candidate")
 

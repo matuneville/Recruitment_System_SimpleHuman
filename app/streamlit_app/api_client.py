@@ -1,11 +1,12 @@
 import streamlit as st
 import requests
 
-# Puerto default de FastAPI (si no debería traerlo de un .env)
+# Puerto default de FastAPI (si no, debería traerlo de un .env)
 API_URL = "http://localhost:8000"
 
 # Helpers (para API requests)
 def get_candidates(name=None, college=None, degree=None, min_score=None, max_score=None):
+    """Obtiene candidatos desde API"""
     params = {
         "name": name,
         "college": college,
@@ -23,6 +24,7 @@ def get_candidates(name=None, college=None, degree=None, min_score=None, max_sco
         return []
 
 def get_candidate_by_id(candidate_id: int):
+    """Obtiene candidato por ID desde API"""
     try:
         response = requests.get(f"{API_URL}/candidates/{candidate_id}")
         response.raise_for_status()
@@ -32,6 +34,7 @@ def get_candidate_by_id(candidate_id: int):
         return None
 
 def get_top_k_candidates(k: int):
+    """Obtiene top-k candidatos desde API"""
     try:
         response = requests.get(f"{API_URL}/candidates/", params={"with_score": True})
         response.raise_for_status()
@@ -43,6 +46,7 @@ def get_top_k_candidates(k: int):
         return []
 
 def create_candidate(candidate_data: dict):
+    """Crea nuevo candidato enviando datos a API"""
     try:
         response = requests.post(f"{API_URL}/candidates/", json=candidate_data)
         response.raise_for_status()
@@ -52,6 +56,7 @@ def create_candidate(candidate_data: dict):
         return None
 
 def generate_and_download_pdf_report(top_k: int):
+    """Crea y descarga informe de los top-k candidatos"""
     try:
         response = requests.get(f"{API_URL}/reports/", params={"k": top_k})
         response.raise_for_status()
