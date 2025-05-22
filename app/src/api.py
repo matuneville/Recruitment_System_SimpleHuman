@@ -23,6 +23,7 @@ def create_candidate(candidate: StudentCandidate):
 
 @app.get('/candidates/')
 def get_candidates(
+        with_score = True,
         name: Optional[str] = Query(None, description="Filter by name"),
         college: Optional[str] = Query(None, description="Filter by college"),
         degree: Optional[str] = Query(None, description="Filter by degree"),
@@ -30,7 +31,7 @@ def get_candidates(
         max_score: Optional[float] = Query(None, ge=0, le=1, description="Filter by maximum score")
 ):
     """Obtiene lista de candidatos con filtros (opcionales)"""
-    candidates_df = candidates_service.get_all_candidates(with_score=True if min_score or max_score else False)
+    candidates_df = candidates_service.get_all_candidates(with_score)
     candidates = candidates_df.to_dict(orient="records")
 
     # Al filtrar con 'in', nos permite queries más flexibles: por ej,
@@ -48,7 +49,7 @@ def get_candidates(
 
     return {
         'total': len(candidates),
-        'results': candidates
+        'candidates': candidates
     }
 
 

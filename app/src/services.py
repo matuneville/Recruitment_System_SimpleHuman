@@ -49,7 +49,7 @@ class CandidateService:
             pd.DataFrame(self.data_header).to_csv(self.data_path, mode='w', header=False, index=False)
             df_new_candidate.to_csv(self.data_path, mode='w', header=True, index=False)
 
-    def get_all_candidates(self, with_score: bool = False) -> pd.DataFrame:
+    def get_all_candidates(self, with_score: bool = True) -> pd.DataFrame:
         """Devuelve pandas dataframe de los de los candidatos"""
         if self.data_path.exists():
             df = pd.read_csv(self.data_path)
