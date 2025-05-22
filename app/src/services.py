@@ -72,6 +72,14 @@ class CandidateService:
         if self.data_path.exists():
             self.data_path.unlink()
 
+    def get_candidate_by_id(self, candidate_id: int) -> StudentCandidate:
+        """Devuelve candidato especifico por su ID (para simplificar, su ID es el índice en el dataframe,
+        es deicr, el número de línea, que coincide con el momento en que fue creado)"""
+        candidate_row = self.get_all_candidates().iloc[candidate_id]
+        candidate_data = candidate_row.to_dict()
+        candidate_data['skills'] = candidate_row['skills'] # ya es una lista
+        return StudentCandidate(**candidate_data)
+
     def _calculate_score(self, row):
         """Calcula el puntaje de un candidato (row de pandas dataframe) segun las ponderaciones asignadas"""
         score = 0
