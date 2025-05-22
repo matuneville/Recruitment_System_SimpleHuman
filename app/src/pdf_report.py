@@ -62,7 +62,7 @@ class PDFReportGenerator:
         details = [
             f"{row['college']} - Academic average: ({row['academic_average']})",
             f"Skills: {self._format_skills(row['skills'])}",
-            f"Preselection score: {row['score']:.2f}",
+            f"Preselection score: {row['score']}",
             f"Email: {row['email']}",
         ]
 
