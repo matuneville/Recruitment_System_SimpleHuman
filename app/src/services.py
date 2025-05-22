@@ -4,57 +4,77 @@ services,py
 Lógica principal del sistema.
 Se definen las principales acciones que dan función y comportamiento al sistema.
 """
+from typing import List, Optional, Dict
 
 # Librerias para guardado y procesamiento de csv
 import pandas as pd
 import pathlib
-
-from app.src.constants import CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE
-
+# Constantes y models
+# from app.src.constants import CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE
 from models import StudentCandidate
 
-CANDIDATES_DATA = pathlib.Path(CANDIDATES_DATA_PATH)
 
-def save_candidate(candidate: StudentCandidate):
-    data = candidate.model_dump()
-    # Conveirto la lista de skills a un string con comas
-    data['skills'] = ','.join(data['skills'])
-    df_new_candidate = pd.DataFrame([data])
+class CandidateService:
+    def __init__(
+            self,
+            data_path: str,
+            header: List[str],
+            prestige_colleges: List[str],
+            relevant_skills: List[str],
+            preselection_weights: Optional[Dict[str, float]] = None,
+    ):
+        self.data_path = pathlib.Path(data_path)
+        self.data_header = header
+        self.prestige_colleges = prestige_colleges
+        self.relevant_skills = relevant_skills
+        self.preselection_weights = preselection_weights or {
+            'academic_average': 0.5,
+            'college': 0.3,
+            'skills': 0.01
+        }
 
-    if CANDIDATES_DATA.exists():
-        # Agrega el candidato al csv (modo append)
-        df_new_candidate.to_csv(CANDIDATES_DATA, mode='a', header=False, index=False)
-    else:
-        # Agrega al candidato creando el archivo nuevo con encabezado
-        df_new_candidate.to_csv(CANDIDATES_DATA, mode='w', header=True, index=False)
+    def save_candidate(self, candidate: StudentCandidate) -> None:
+        """Guarda la data del candidato en el csv"""
+        data = candidate.model_dump()
+        data['skills'] = ','.join(data['skills'])
+        df_new_candidate = pd.DataFrame([data])
+
+        if self.data_path.exists():
+            df_new_candidate.to_csv(self.data_path, mode='a', header=False, index=False)
+        else:
+            pd.DataFrame(self.data_header).to_csv(self.data_path, mode='w', header=False, index=False)
+            df_new_candidate.to_csv(self.data_path, mode='w', header=True, index=False)
+
+    def get_all_candidates(self) -> pd.DataFrame:
+        """Devuelve pandas dataframe de los de los candidatos"""
+        if self.data_path.exists():
+            df = pd.read_csv(self.data_path)
+            # Convierto skills separadas por coma a lista nuevamente, siempre que no sea NaN ni sea string vacio
+            df['skills'] = df['skills'].apply(lambda skills: skills.split(',') if pd.notna(skills) and skills else [])
+            return df
+        else:
+            return pd.DataFrame(columns=self.data_header)
+
+    def get_preselected_candidates(self, k: int = 10) -> pd.DataFrame:
+        """Devuelve pandas dataframe de los primeros k mejores candidatos"""
+        df = pd.read_csv(self.data_path)
+        df['score'] = df.apply(lambda row: self._calculate_score(row), axis=1)
+        return df.sort_values(by=['score'], ascending=False).drop(columns='score').head(k)
+
+    def clear_all_candidates(self):
+        """Elimina la informacion de los candidatos"""
+        if self.data_path.exists():
+            self.data_path.unlink()
 
 
-def read_candidates() -> pd.DataFrame:
-    if CANDIDATES_DATA.exists():
-        df = pd.read_csv(CANDIDATES_DATA)
-        # Convierto skills separadas por coma a lista nuevamente, siempre que no sea NaN ni sea string vacio
-        df['skills'] = df['skills'].apply(lambda skills: skills.split(',') if pd.notna(skills) and skills else [])
-        return df
-    else:
-        return pd.DataFrame(columns=HEADER)
-
-
-def preselect_candidates() -> pd.DataFrame:
-    df = pd.read_csv(CANDIDATES_DATA)
-    df['score'] = df.apply(lambda row: calculate_score(row), axis=1)
-
-    return df.sort_values(by=['score'], ascending=False).drop(columns='score').head(10)
-
-
-def calculate_score(row):
-    score = 0
-
-    if row['academic_average'] > 7.5:
-        score += 0.5
-    if row['college'] in PRESTIGE_COLLEGES:
-        score += 0.3
-    for skill in row['skills']:
-        if skill in RELEVANT_SKILLS_FOR_TRAINEE_ROLE:
-            score += 0.01
-
-    return score
+    def _calculate_score(self, row):
+        """Calcula el puntaje de un candidato (row de pandas dataframe) segun las ponderaciones asignadas"""
+        score = 0
+        if row['academic_average'] > 7.5:
+            score += self.preselection_weights['academic_average']
+        if row['college'] in self.prestige_colleges:
+            score += self.preselection_weights['college']
+        for skill in row['skills']:
+            if skill in self.relevant_skills:
+                score += self.preselection_weights['skill']
+        return score
