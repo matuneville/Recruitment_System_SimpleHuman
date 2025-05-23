@@ -28,9 +28,9 @@ def main():
             college_filter = st.text_input("College 🏛️")
             col_min, col_max = st.columns(2)
             with col_min:
-                min_score_filter = st.text_input("Min. Score")
+                min_score_filter = st.number_input("Min. Score", min_value=0.0, max_value=1.0, step=0.01)
             with col_max:
-                max_score_filter = st.text_input("Max. Score")
+                max_score_filter = st.number_input("Max. Score", min_value=0.0, max_value=1.0, step=0.01)
 
         if st.button("🔍 Search"):
             candidates = get_candidates(
