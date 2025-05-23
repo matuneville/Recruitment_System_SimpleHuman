@@ -45,7 +45,8 @@ def main():
         st.markdown("---")
 
         st.subheader("🔎 Search Candidate by ID")
-        candidate_id = st.number_input("Candidate ID", min_value=0, step=1)
+        candidates = get_candidates()
+        candidate_id = st.number_input("Candidate ID", min_value=0, max_value=len(candidates)-1, step=1)
         if st.button("🔍 Search by ID"):
             candidate = get_candidate_by_id(candidate_id)
             if candidate:
