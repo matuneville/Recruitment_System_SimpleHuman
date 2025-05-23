@@ -1,5 +1,9 @@
 # Constantes para data
-CANDIDATES_DATA_PATH = '../data/candidates.csv'
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent  # lleva hasta `app/`
+CANDIDATES_DATA_PATH = BASE_DIR / "data" / "candidates.csv"
+REPORT_DIR = BASE_DIR / "data"
 HEADER = ['full_name', 'email', 'college', 'degree', 'academic_average', 'skills', 'work_experience']
 
 # Universidades consideradas de alto prestigio

@@ -17,9 +17,10 @@ class ReportStyle:
     line_spacing: int = 6
     page_margins: int = 10
 
+from src.constants import REPORT_DIR
 
 class PDFReportGenerator:
-    def __init__(self, output_dir: str = "../data/", style: ReportStyle = None):
+    def __init__(self, output_dir: str = REPORT_DIR, style: ReportStyle = None):
         self.output_dir = Path(output_dir)
         self.style = style or ReportStyle()
 

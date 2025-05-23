@@ -3,10 +3,10 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
 
-from models import StudentCandidate
-from services import CandidateService
-from pdf_report import PDFReportGenerator
-from constants import *
+from src.models import StudentCandidate
+from src.services import CandidateService
+from src.pdf_report import PDFReportGenerator
+from src.constants import *
 
 app = FastAPI()
 candidates_service = CandidateService(CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE)

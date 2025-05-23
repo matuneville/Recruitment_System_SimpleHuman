@@ -15,7 +15,7 @@ import pathlib
 
 # Constantes y models
 # from app.src.constants import CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE
-from models import StudentCandidate
+from src.models import StudentCandidate
 
 
 class CandidateService:
