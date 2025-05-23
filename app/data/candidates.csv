@@ -1,3 +1,6 @@
 full_name,email,college,degree,academic_average,skills,work_experience
 Matías Neville,nevillem@gmail.com,Massachusetts Institute of Technology,Computer Science,8.4,"Python,SQL,ORMs,Machine Learning",-
 J. Jonah Jameson,jjj@dailybugle.com,University of New York,Journalism,6.600000000000007,"Writing,Editing,Programming",Daily Bugle Journalist: 1998 - Present
+María Juana Pérez,mrperez@yahoo.net,University of Oxford,Data Science,10.0,"Linux,Algorithms,Data Structures,Cloud Basics,APIs,Docker,Testing",Summer Internship 2023
+John Doe,johndoe@hotmail.net,University of Cambridge,Computer Science,9.8,"APIs,Docker,Testing,Windows",Microsoft: 2021 - 2023
+Jane Doe,JaneDoe@example.com,University of Buenos Aires,Maths Science,7.6000000000000085,,-
