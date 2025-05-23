@@ -45,3 +45,6 @@ En otro terminal, iniciar app de Streamlit:
 ```bash
 streamlit run src/streamlit_app/app.py
 ```
+
+La app de Streamlit se abre por default en el servidor local: [http://localhost:8501](http://localhost:8501).  
+La API de FastAPI puede ser utilizada a través de la interfaz de Swagger UI, en: [http://localhost:8000/docs](http://localhost:8000/docs).
