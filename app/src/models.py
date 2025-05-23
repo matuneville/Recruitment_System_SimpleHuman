@@ -1,7 +1,7 @@
 """
 models.py
 
-Define el modelo de datos para representar a un candidato estudiante.
+Define el modelo de datos (schemas) para representar a un candidato estudiante.
 Pydantic es usado para la validación de datos y por su compatibilidad con FastAPI.
 """
 

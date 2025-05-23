@@ -1,3 +1,8 @@
+"""
+api_client.py
+
+Archivo con funciones helpers para app.py. Comunican con el servidor vía la API desarrollada en api.py
+"""
 import streamlit as st
 import requests
 

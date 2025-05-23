@@ -1,3 +1,9 @@
+"""
+app.py
+
+Front-End principal de la app.
+Hecho con StreamLit, un framework simple de diseño de aplicaciones.
+"""
 import streamlit as st
 from api_client import *
 
