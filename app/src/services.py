@@ -11,7 +11,6 @@ from typing import List, Optional, Dict
 
 # Librerias para guardado y procesamiento de csv
 import pandas as pd
-import pathlib
 
 # Constantes y models
 # from app.src.constants import CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE
@@ -21,13 +20,13 @@ from src.models import StudentCandidate
 class CandidateService:
     def __init__(
             self,
-            data_path: str,
+            data_path,
             header: List[str],
             prestige_colleges: List[str],
             relevant_skills: List[str],
             preselection_weights: Optional[Dict[str, float]] = None,
     ):
-        self.data_path = pathlib.Path(data_path)
+        self.data_path = data_path
         self.data_header = header
         self.prestige_colleges = prestige_colleges
         self.relevant_skills = relevant_skills
