@@ -9,7 +9,7 @@ Sistema simple de reclutamiento de candidatos estudiantes que permite visualizar
 - Interfaz web con Streamlit.
 - Generación de reportes PDF.
 
-> Constantes: incluyen valores como 'universidades de prestigio' o 'habilidades pertinentes'. Editables desde `app/src/.py`
+> Constantes: incluyen valores como 'universidades de prestigio' o 'habilidades pertinentes'. Editables desde `app/src/constants.py`
 
 ## Requisitos
 - Python 3.10+
