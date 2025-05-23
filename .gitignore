@@ -1,5 +1,4 @@
 .idea
-app/data/candidates.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

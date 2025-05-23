@@ -60,9 +60,9 @@ class PDFReportGenerator:
         pdf.set_font(font, size=size)
 
         details = [
-            f"{row['college']} - Academic average: ({row['academic_average']})",
+            f"{row['college']} - Academic average: ({row['academic_average']:.2f})",
             f"Skills: {self._format_skills(row['skills'])}",
-            f"Preselection score: {row['score']}",
+            f"Preselection score: {row['score']:.1f}",
             f"Email: {row['email']}",
         ]
 
