@@ -72,6 +72,8 @@ class PDFReportGenerator:
 
     @staticmethod
     def _format_skills(skills):
-        if pd.notna(skills):
-            return ', '.join(skills.split(','))
-        return ''
+        return ', '.join(skills)
+        # fix debido al refactor de CandidateService!
+        #if pd.notna(skills):
+        #    return ', '.join(skills.split(','))
+        #return ''
