@@ -1,7 +1,7 @@
 from math import ceil
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.responses import FileResponse
 
 from src.models import StudentCandidate
@@ -10,11 +10,18 @@ from src.pdf_report import PDFReportGenerator
 from src.constants import *
 
 app = FastAPI()
-candidates_service = CandidateService(CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE)
-report_generator = PDFReportGenerator()
+
+def get_candidates_service():
+    return CandidateService(CANDIDATES_DATA_PATH, HEADER, PRESTIGE_COLLEGES, RELEVANT_SKILLS_FOR_TRAINEE_ROLE)
+
+def get_report_generator():
+    return PDFReportGenerator()
 
 @app.post('/candidates/')
-def create_candidate(candidate: StudentCandidate):
+def create_candidate(
+        candidate: StudentCandidate,
+        candidates_service: CandidateService = Depends(get_candidates_service)
+):
     """Crea nuevo candidato"""
     try:
         candidates_service.save_candidate(candidate)
@@ -32,6 +39,7 @@ def get_candidates(
         max_score: Optional[float] = Query(None, ge=0, le=1, description="Filter by maximum score"),
         page: int = Query(1, ge=1, description="Page number"),
         per_page: int = Query(10, ge=1, le=100, description="Items per page"),
+        candidates_service: CandidateService = Depends(get_candidates_service)
 ):
     """Obtiene lista de candidatos con filtros (opcionales)"""
     candidates_df = candidates_service.get_all_candidates(with_score)
@@ -66,7 +74,10 @@ def get_candidates(
     }
 
 @app.get('/candidates/{candidate_id}')
-def get_candidate(candidate_id: int):
+def get_candidate(
+        candidate_id: int,
+        candidates_service: CandidateService = Depends(get_candidates_service)
+):
     """Obtiene un candidato especifico por su ID"""
     candidate = candidates_service.get_candidate_by_id(candidate_id)
     if not candidate:
@@ -74,7 +85,11 @@ def get_candidate(candidate_id: int):
     return {'candidate': candidate}
 
 @app.get('/reports/')
-def generate_report(k: int = Query(10, description="Top k candidates to include in report")):
+def generate_report(
+        k: int = Query(10, description="Top k candidates to include in report"),
+        candidates_service: CandidateService = Depends(get_candidates_service),
+        report_generator: PDFReportGenerator = Depends(get_report_generator)
+):
     """Genera el PDF report de los top k candidatos según score de preselección"""
     try:
         preselected_candidates = candidates_service.get_preselected_candidates(k)
