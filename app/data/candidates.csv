@@ -1,6 +1,24 @@
 full_name,email,college,degree,academic_average,skills,work_experience
 Matías Neville,nevillem@gmail.com,Massachusetts Institute of Technology,Computer Science,8.4,"Python,SQL,ORMs,Machine Learning",-
-J. Jonah Jameson,jjj@dailybugle.com,University of New York,Journalism,6.600000000000007,"Writing,Editing,Programming",Daily Bugle Journalist: 1998 - Present
+J. Jonah Jameson,jjj@dailybugle.com,University of New York,Journalism,6.6,"Writing,Editing,Programming",Daily Bugle Journalist: 1998 - Present
 María Juana Pérez,mrperez@yahoo.net,University of Oxford,Data Science,10.0,"Linux,Algorithms,Data Structures,Cloud Basics,APIs,Docker,Testing",Summer Internship 2023
 John Doe,johndoe@hotmail.net,University of Cambridge,Computer Science,9.8,"APIs,Docker,Testing,Windows",Microsoft: 2021 - 2023
-Jane Doe,JaneDoe@example.com,University of Buenos Aires,Maths Science,7.6000000000000085,,-
+Jane Doe,JaneDoe@example.com,University of Buenos Aires,Maths Science,7.6,,-
+Emma Watson,ewatson@hogwarts.edu,Harvard University,English Literature,9.2,"Public Speaking,Creative Writing,French",UN Women Goodwill Ambassador: 2014-Present
+Tony Stark,tstark@starkindustries.com,California Institute of Technology,Physics,9.9,"Engineering,Robotics,AI,Business Management",Stark Industries CEO: 2000-Present
+Bruce Banner,bbanner@gamma.edu,University of Chicago,Biochemistry,8.7,"Radiation Physics,Anger Management,Medical Research",Gamma Labs Researcher: 2005-2010
+Natasha Romanoff,blackwidow@shield.gov,University of Moscow,Espionage,9.5,"Martial Arts,Covert Ops,Multilingual",SHIELD Agent: 2010-Present
+Peter Parker,pparker@nyu.edu,Empire State University,Biochemistry,8.3,"Photography,Web Design,Chemistry",Freelance Photographer: 2019-Present
+Wanda Maximoff,wmaximoff@sokovia.edu,University of Sokovia,Psychology,7.8,"Telekinesis,Reality Manipulation,Magic",-
+Stephen Strange,drsrange@kamartaj.edu,Columbia University,Neurosurgery,9.7,"Mystic Arts,Time Manipulation,Medical Expertise",Neurosurgeon: 2005-2016
+Reed Richards,rrichards@baxter.edu,California Institute of Technology,Engineering,9.8,"Elasticity,Physics,Invention",Baxter Building Researcher: 2010-Present
+Susan Storm,sstorm@baxter.edu,Columbia University,Biochemistry,9.4,"Invisibility,Force Fields,Molecular Biology",Baxter Building Researcher: 2010-Present
+Charles Xavier,cxavier@xavier.edu,University of Oxford,Genetics,9.9,"Telepathy,Psychology,Education",Xavier's School Headmaster: 1980-Present
+Scott Summers,scyclops@xavier.edu,University of Nebraska,Education,7.5,"Optics,Leadership,Team Management",X-Men Team Leader: 2000-Present
+Ororo Munroe,storm@xavier.edu,University of Cairo,Meteorology,8.8,"Weather Manipulation,Pilot,Multilingual",X-Men Member: 1995-Present
+Hank McCoy,beast@xavier.edu,Harvard University,Biochemistry,9.6,"Genetics,Physics,Acrobatics",X-Men Scientist: 1990-Present
+Jean Grey,phoenix@xavier.edu,University of Toronto,Psychology,9.3,"Telepathy,Telekinesis,Psychic Defense",X-Men Member: 1995-Present
+Logan Howlett,wolverine@xavier.edu,University of Alberta,History,6.9,"Combat,Healing Factor,Multilingual",X-Men Member: 1980-Present
+Pepper Potts,ppotts@starkindustries.com,Harvard University,Business Administration,8.9,"Management,Finance,Public Relations",Stark Industries CEO: 2010-Present
+Nick Fury,nfury@shield.gov,United States Military Academy,Military Strategy,8.5,"Tactics,Espionage,Leadership",SHIELD Director: 1990-Present
+Carol Danvers,captainmarvel@airforce.edu,United States Air Force Academy,Aeronautics,9.1,"Flight,Energy Manipulation,Combat",USAF Pilot: 1990-1995

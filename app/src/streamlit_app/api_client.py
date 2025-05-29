@@ -10,23 +10,19 @@ import requests
 API_URL = "http://localhost:8000"
 
 # Helpers (para API requests)
-def get_candidates(name=None, college=None, degree=None, min_score=None, max_score=None):
-    """Obtiene candidatos desde API"""
-    params = {
-        "name": name,
-        "college": college,
-        "degree": degree,
-        "min_score": min_score,
-        "max_score": max_score
-    }
+def get_candidates(filters=None):
+    """Fetch candidates from API"""
+    if filters is None:
+        filters = {}
+
+    final_filters = {k: v for k, v in filters.items() if v is not None}
     try:
-        response = requests.get(f"{API_URL}/candidates/", params=params)
-        # print("Debug:", response.json())
+        response = requests.get(f"{API_URL}/candidates/", params=final_filters)
         response.raise_for_status()
-        return response.json().get("candidates", [])
+        return response.json()  # ✅ Return full JSON (dict), not just .get("candidates")
     except requests.exceptions.RequestException as e:
         st.error(f"Error when getting candidates: {str(e)}")
-        return []
+        return {"candidates": [], "total_pages": 1}
 
 def get_candidate_by_id(candidate_id: int):
     """Obtiene candidato por ID desde API"""

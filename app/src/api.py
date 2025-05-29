@@ -1,3 +1,4 @@
+from math import ceil
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Query
@@ -28,7 +29,9 @@ def get_candidates(
         college: Optional[str] = Query(None, description="Filter by college"),
         degree: Optional[str] = Query(None, description="Filter by degree"),
         min_score: Optional[float] = Query(None, ge=0, le=1, description="Filter by minimum score"),
-        max_score: Optional[float] = Query(None, ge=0, le=1, description="Filter by maximum score")
+        max_score: Optional[float] = Query(None, ge=0, le=1, description="Filter by maximum score"),
+        page: int = Query(1, ge=1, description="Page number"),
+        per_page: int = Query(10, ge=1, le=100, description="Items per page"),
 ):
     """Obtiene lista de candidatos con filtros (opcionales)"""
     candidates_df = candidates_service.get_all_candidates(with_score)
@@ -47,11 +50,20 @@ def get_candidates(
     if max_score is not None:
         candidates = [c for c in candidates if c['score'] <= max_score]
 
-    return {
-        'total': len(candidates),
-        'candidates': candidates
-    }
+    total_candidates = len(candidates)
+    total_pages = ceil(total_candidates / per_page)
 
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_candidates = candidates[start:end]
+
+    return {
+        'total': total_candidates,
+        'page': page,
+        'per_page': per_page,
+        'total_pages': total_pages,
+        'candidates': paginated_candidates
+    }
 
 @app.get('/candidates/{candidate_id}')
 def get_candidate(candidate_id: int):

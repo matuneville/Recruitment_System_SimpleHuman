@@ -19,6 +19,9 @@ def main():
     # Creo primera tab de la app: donde se buscan candidatos totales, por su nombre,
     # los top-k mejores, o se imprime el reporte PDF
     with tab_1:
+        if 'page_number' not in st.session_state:
+            st.session_state.page_number = 1
+
         st.header("Search Filters")
         col_1, col_2 = st.columns(2)
         with col_1:
@@ -32,15 +35,35 @@ def main():
             with col_max:
                 max_score_filter = st.number_input("Max. Score", min_value=0.0, max_value=1.0, step=0.01)
 
+        # Store filters to reuse them when loading more pages
+        filters = {
+            "name": name_filter or None,
+            "college": college_filter or None,
+            "degree": degree_filter or None,
+            "min_score": min_score_filter or None,
+            "max_score": max_score_filter or None,
+            "page": st.session_state.page_number,
+            "per_page": 10
+        }
+
         if st.button("🔍 Search"):
-            candidates = get_candidates(
-                name=name_filter if name_filter else None,
-                college=college_filter if college_filter else None,
-                degree=degree_filter if degree_filter else None,
-                min_score=min_score_filter if min_score_filter else None,
-                max_score=max_score_filter if max_score_filter else None,
-            )
-            st.dataframe(candidates, use_container_width=True)
+            st.session_state.page_number = 1
+            filters["page"] = 1
+            response = get_candidates(filters)
+            st.session_state["current_candidates"] = response.get("candidates", [])
+            st.session_state["total_pages"] = response.get("total_pages", 1)
+
+        # Show current results
+        if "current_candidates" in st.session_state:
+            st.dataframe(st.session_state["current_candidates"], use_container_width=True)
+
+            if st.session_state.page_number < st.session_state.get("total_pages", 1):
+                if st.button("▶️ Load more candidates"):
+                    st.session_state.page_number += 1
+                    filters["page"] = st.session_state.page_number
+                    response = get_candidates(filters)
+                    new_candidates = response.get("candidates", [])
+                    st.session_state["current_candidates"].extend(new_candidates)
 
         st.markdown("---")
 
